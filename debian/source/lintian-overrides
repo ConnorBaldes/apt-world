@@ -1,0 +1,7 @@
+# Override explanation for bad-distribution-in-changes-file
+# This error occurs during sbuild's internal lintian run because sbuild
+# generates a temporary .changes file using the chroot distribution
+# (e.g., bookworm) instead of the target distribution (e.g., unstable)
+# from debian/changelog. This is an artifact of the sbuild check and
+# not an error in the final package intended for upload.
+apt-world source: bad-distribution-in-changes-file
