@@ -1,0 +1,59 @@
+.\" Manpage for apt-world
+.\" Contact Connor Baldes <connorbaldes@gmail.com> to correct errors or typos.
+.TH apt-world 1 "April 22, 2025" "0.1" "apt-world Manual"
+.SH NAME
+apt-world \- List manually installed Debian packages
+.SH SYNOPSIS
+.B apt-world
+[\fB-v\fR | \fB--verbose\fR]
+[\fB--status-file\fR \fIPATH\fR]
+[\fB--extended-states-file\fR \fIPATH\fR]
+[\fB-h\fR | \fB--help\fR]
+.SH DESCRIPTION
+.B apt-world
+parses the dpkg status file (default: /var/lib/dpkg/status)
+and the apt extended states file (default: /var/lib/apt/extended_states)
+to determine which currently installed packages were likely installed manually
+by a user, rather than automatically as dependencies.
+.PP
+A package is considered manually installed if it is currently installed AND
+it meets either of the following conditions:
+.IP \(bu 2
+It is explicitly marked with "Auto-Installed: 0" in the extended_states file.
+.IP \(bu 2
+It is NOT listed in the extended_states file at all (implicit manual).
+.PP
+Packages marked "Auto-Installed: 1" are considered automatic dependencies.
+This utility provides output similar to the 'selected' set in Gentoo Portage.
+It differs slightly from 'apt-mark showmanual' in that packages not
+present in extended_states are included in the output. The output list
+is sorted alphabetically and printed to standard output, one package per line.
+.SH OPTIONS
+.TP
+\fB-v\fR, \fB--verbose\fR
+Enable verbose (DEBUG level) logging to stderr. Shows internal steps like file paths being read and counts of packages found.
+.TP
+\fB--status-file\fR \fIPATH\fR
+Specify an alternative path to the dpkg status file to parse.
+Default: /var/lib/dpkg/status
+.TP
+\fB--extended-states-file\fR \fIPATH\fR
+Specify an alternative path to the apt extended_states file to parse.
+Default: /var/lib/apt/extended_states
+.TP
+\fB-h\fR, \fB--help\fR
+Show a help message summarizing options and exit.
+.SH FILES
+.TP
+\fI/var/lib/dpkg/status\fR
+The dpkg status file containing information about installed packages. Read by default. Required for operation.
+.TP
+\fI/var/lib/apt/extended_states\fR
+The apt extended states file containing the Auto-Installed flag. Read by default if available. If missing or unreadable, a warning is issued, and all installed packages are considered manual.
+.SH SEE ALSO
+.BR dpkg (1),
+.BR apt-mark (8),
+.BR apt (8),
+.BR debian.deb822 (3pm)
+.SH AUTHOR
+Connor Baldes <connorbaldes@gmail.com>

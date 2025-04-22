@@ -1,0 +1,20 @@
+apt-world for Debian
+--------------------
+
+This package provides the apt-world command-line utility to list
+packages manually installed by the user, based on dpkg and apt
+status files.
+
+Dependencies:
+ * This package requires the 'python3-debian' package to function,
+   which should be installed automatically as a dependency.
+
+Files Read:
+ * /var/lib/dpkg/status (Required)
+ * /var/lib/apt/extended_states (Optional, read if available)
+
+Notes:
+ * This tool adheres to PEP 668 expectations and should not conflict
+   with pip when installed as a system package.
+
+ -- Connor Baldes <connorbaldes@gmail.com>  Tue, 22 Apr 2025 10:15:00 -0700
