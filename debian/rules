@@ -1,0 +1,10 @@
+#!/usr/bin/make -f
+
+# Minimal rules file using debhelper.
+# Build system steps (configure, build, install) are mostly no-ops
+# as this is a simple script. Installation is handled by dh_install
+# via debian/apt-world.install. The --with python3 addon handles
+# byte-compilation, dependency calculation (${python3:Depends}), etc.
+
+%:
+	dh $@ --with python3

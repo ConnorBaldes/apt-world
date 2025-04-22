@@ -1,0 +1,29 @@
+Source: apt-world
+Maintainer: Connor Baldes <connorbaldes@gmail.com>
+Section: utils
+Priority: optional
+Build-Depends: debhelper-compat (= 13),
+               dh-python,
+               python3,
+               python3-debian,
+               python3-pytest,
+               python3-pytest-cov
+Standards-Version: 4.6.2
+Rules-Requires-Root: no
+Testsuite: autopkgtest-pkg-python
+
+Package: apt-world
+Architecture: all
+Depends: ${misc:Depends},
+         python3,
+         python3-debian (>= 0.1.49~),  # Check version for Bookworm if needed
+         ${python3:Depends}
+Description: List manually installed Debian packages
+ apt-world parses dpkg and apt status files to determine which packages
+ were likely installed directly by the user, rather than automatically
+ as dependencies.
+ .
+ It reads /var/lib/dpkg/status and /var/lib/apt/extended_states and
+ considers a package manual if it's installed but not marked as
+ Auto-Installed: 1 in the extended states file. This provides output
+ similar to the 'selected' set in Gentoo Portage or 'apt-mark showmanual'.
