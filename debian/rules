@@ -8,3 +8,4 @@
 
 %:
 	dh $@ --with python3
+	
