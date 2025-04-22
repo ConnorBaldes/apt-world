@@ -1,0 +1,7 @@
+Package: old-package
+Architecture: amd64
+Status: deinstall ok config-files
+
+Package: removed-package
+Architecture: all
+Status: purge ok not-installed

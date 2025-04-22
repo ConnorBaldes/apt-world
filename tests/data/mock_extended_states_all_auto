@@ -1,0 +1,11 @@
+Package: core-lib:amd64
+Architecture: amd64
+Auto-Installed: 1
+
+Package: another-lib:all
+Architecture: all
+Auto-Installed: 1
+
+Package: helper-util:amd64
+Architecture: amd64
+Auto-Installed: 1

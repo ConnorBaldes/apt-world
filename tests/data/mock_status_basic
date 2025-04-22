@@ -1,0 +1,24 @@
+Package: libc6
+Architecture: amd64
+Status: install ok installed
+Priority: required
+
+Package: python3-requests
+Architecture: all
+Status: install ok installed
+Priority: optional
+
+Package: vim-tiny
+Architecture: amd64
+Status: install ok installed
+Priority: important
+
+Package: unused-package
+Architecture: all
+Status: deinstall ok config-files
+Priority: optional
+
+Package: essential-tool
+Architecture: amd64
+Status: install ok installed
+Priority: required

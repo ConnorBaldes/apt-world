@@ -1,0 +1,11 @@
+# Missing Package field in first stanza
+Architecture: amd64
+Status: install ok installed
+
+Package: good-package
+Architecture: all
+Status: install ok installed
+
+Package: missing-status
+Architecture: amd64
+# Status field missing

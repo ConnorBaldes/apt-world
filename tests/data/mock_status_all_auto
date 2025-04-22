@@ -1,0 +1,11 @@
+Package: core-lib
+Architecture: amd64
+Status: install ok installed
+
+Package: another-lib
+Architecture: all
+Status: install ok installed
+
+Package: helper-util
+Architecture: amd64
+Status: install ok installed

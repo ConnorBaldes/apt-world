@@ -1,0 +1,11 @@
+# Missing Package field
+Architecture: amd64
+Auto-Installed: 1
+
+Package: bad-value:all
+Architecture: all
+Auto-Installed: maybe
+
+Package: good-auto:amd64
+Architecture: amd64
+Auto-Installed: 1
