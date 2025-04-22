@@ -1,7 +1,5 @@
 #!/usr/bin/make -f
 
-export DH_VERBOSE=1
-
 # Minimal rules file using debhelper.
 # Build system steps (configure, build, install) are mostly no-ops
 # as this is a simple script. Installation is handled by dh_install
@@ -10,3 +8,4 @@ export DH_VERBOSE=1
 
 %:
 	dh $@ --with python3
+	
