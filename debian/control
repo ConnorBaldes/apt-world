@@ -27,3 +27,4 @@ Description: List manually installed Debian packages
  considers a package manual if it's installed but not marked as
  Auto-Installed: 1 in the extended states file. This provides output
  similar to the 'selected' set in Gentoo Portage or 'apt-mark showmanual'.
+ 
