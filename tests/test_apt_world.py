@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Tests for the apt_world script using pytest.
+Tests for the apt-world script using pytest.
 
 Validates the parsing and correlation logic using mock data files,
 and tests the command-line interface.
@@ -35,8 +35,8 @@ MOCK_FILE_NON_EXISTENT = os.path.join(MOCK_DATA_DIR, "non_existent_file")
 
 # --- Helper Function ---
 def run_cli(args: list[str]) -> subprocess.CompletedProcess:
-    """Helper to run the apt_world script via CLI."""
-    script_path = os.path.join(TEST_DIR, '..', 'apt_world.py')
+    """Helper to run the apt-world script via CLI."""
+    script_path = os.path.join(TEST_DIR, '..', 'apt_world.py') # Use renamed script
     # Use sys.executable to ensure we use the same python interpreter pytest is using
     command = [sys.executable, script_path] + args
     # Set encoding for consistent text handling
@@ -75,9 +75,9 @@ def test_get_installed_malformed(caplog):
     packages = apt_world.get_installed_packages(MOCK_STATUS_MALFORMED)
     # Only the good package should be found
     assert packages == {'good-package:all'}
-    # Check that warnings were logged for the bad stanzas
-    assert "Found stanza without 'Package' field" in caplog.text
-    assert "Package 'missing-status' in" in caplog.text and "missing 'Status' field" in caplog.text
+    # Check that warnings were logged for the bad stanzas using records
+    assert any("without 'Package' field" in record.message for record in caplog.records if record.levelno == logging.WARNING) # Corrected substring
+    assert any("missing 'Status' field" in record.message and "missing-status" in record.message for record in caplog.records if record.levelno == logging.WARNING)
 
 def test_get_installed_file_not_found():
     """Test that SystemExit is raised if the status file is not found."""
@@ -105,7 +105,8 @@ def test_get_auto_map_file_not_found(caplog):
     caplog.set_level(logging.WARNING)
     auto_map = apt_world.get_auto_installed_map(MOCK_FILE_NON_EXISTENT)
     assert auto_map == {}
-    assert f"Could not find {MOCK_FILE_NON_EXISTENT}" in caplog.text
+    # Check warning using records for robustness
+    assert any(f"Could not find {MOCK_FILE_NON_EXISTENT}" in record.message for record in caplog.records if record.levelno == logging.WARNING)
 
 def test_get_auto_map_all_auto():
     """Test parsing auto-install info from 'all_auto' extended_states."""
@@ -119,9 +120,9 @@ def test_get_auto_map_malformed(caplog):
     auto_map = apt_world.get_auto_installed_map(MOCK_ESTATES_MALFORMED)
     # Only the good entry should be parsed
     assert auto_map == {'good-auto:amd64': 1}
-    # Check warnings
-    assert "Found stanza without 'Package' field" in caplog.text
-    assert "Package 'bad-value:all' has non-integer Auto-Installed value 'maybe'" in caplog.text
+    # Check warnings using records for robustness
+    assert any("without 'Package' field" in record.message for record in caplog.records if record.levelno == logging.WARNING) # Corrected substring
+    assert any("non-integer Auto-Installed value 'maybe'" in record.message and "bad-value:all" in record.message for record in caplog.records if record.levelno == logging.WARNING)
 
 
 # 3. Tests for get_manually_installed_packages()
@@ -181,12 +182,13 @@ def test_get_manual_malformed_files(caplog):
     manual_pkgs = apt_world.get_manually_installed_packages(
         MOCK_STATUS_MALFORMED, MOCK_ESTATES_MALFORMED
     )
-    # Only 'good-package' is installed and it's not in the valid auto_map entries
+    # Only 'good-package:all' is installed and it's not in the valid auto_map entries
     assert sorted(manual_pkgs) == sorted(['good-package:all'])
-    # Check that warnings occurred during parsing of underlying files
-    assert "missing 'Package' field" in caplog.text # From both files
-    assert "missing 'Status' field" in caplog.text # From status
-    assert "non-integer Auto-Installed value" in caplog.text # From estates
+    # Check that warnings occurred during parsing of underlying files using records
+    # Corrected substring check:
+    assert any("without 'Package' field" in record.message for record in caplog.records if record.levelno == logging.WARNING)
+    assert any("missing 'Status' field" in record.message for record in caplog.records if record.levelno == logging.WARNING)
+    assert any("non-integer Auto-Installed value" in record.message for record in caplog.records if record.levelno == logging.WARNING)
 
 
 # 4. Tests for main() / CLI (Exceptional Practice)
@@ -202,8 +204,11 @@ def test_cli_basic_run():
     # Split stdout lines, strip whitespace, filter empty lines, sort
     actual_output_lines = sorted(filter(None, [line.strip() for line in result.stdout.splitlines()]))
     assert actual_output_lines == sorted(expected_output_lines)
-    assert "ERROR:" not in result.stderr
-    assert "WARNING:" not in result.stderr
+    # Check stderr is clean (no warnings/errors expected for this case)
+    # Use lower() for case-insensitive check if needed, but exact match is better if possible
+    assert "ERROR" not in result.stderr.upper()
+    assert "WARNING" not in result.stderr.upper()
+
 
 def test_cli_verbose_logging():
     """Test that -v enables DEBUG logging to stderr."""
@@ -240,5 +245,5 @@ def test_cli_invalid_argument():
     args = ["--nonexistent-argument"]
     result = run_cli(args)
     assert result.returncode != 0 # Should be non-zero (usually 2 for argparse errors)
-    assert "usage: apt_world.py" in result.stderr # Should print usage
+    assert f"usage: {os.path.basename(apt_world.__file__)}" in result.stderr # Use actual script name dynamically
     assert "unrecognized arguments: --nonexistent-argument" in result.stderr

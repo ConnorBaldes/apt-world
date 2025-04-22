@@ -23,6 +23,7 @@ MANIFEST
 
 # Pytest
 .pytest_cache/
+.coverage
 
 # Debian packaging
 debian/.debhelper/
