@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Tests for the apt-world script using pytest.
+Tests for the apt_world script using pytest.
 
 Validates the parsing and correlation logic using mock data files,
 and tests the command-line interface.
@@ -15,7 +15,7 @@ import subprocess # For testing CLI
 # Make the main script importable
 # Assumes test file is in 'tests/' and script is in parent directory '.'
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-import apt_world # Imports apt-world.py
+import apt_world # Imports apt_world.py
 
 # --- Test Setup ---
 TEST_DIR = os.path.dirname(__file__)
@@ -35,8 +35,8 @@ MOCK_FILE_NON_EXISTENT = os.path.join(MOCK_DATA_DIR, "non_existent_file")
 
 # --- Helper Function ---
 def run_cli(args: list[str]) -> subprocess.CompletedProcess:
-    """Helper to run the apt-world script via CLI."""
-    script_path = os.path.join(TEST_DIR, '..', 'apt-world.py')
+    """Helper to run the apt_world script via CLI."""
+    script_path = os.path.join(TEST_DIR, '..', 'apt_world.py')
     # Use sys.executable to ensure we use the same python interpreter pytest is using
     command = [sys.executable, script_path] + args
     # Set encoding for consistent text handling
@@ -240,5 +240,5 @@ def test_cli_invalid_argument():
     args = ["--nonexistent-argument"]
     result = run_cli(args)
     assert result.returncode != 0 # Should be non-zero (usually 2 for argparse errors)
-    assert "usage: apt-world.py" in result.stderr # Should print usage
+    assert "usage: apt_world.py" in result.stderr # Should print usage
     assert "unrecognized arguments: --nonexistent-argument" in result.stderr

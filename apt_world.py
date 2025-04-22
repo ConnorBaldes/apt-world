@@ -23,7 +23,7 @@ from typing import Dict, List, Optional, Set, Iterator
 # Use try-except for the import in case python3-debian is not installed
 # although the packaging should ensure it is.
 try:
-    from debian.deb822 import Deb822, Deb822Paragraph
+    from debian.deb822 import Deb822
 except ImportError:
     print("Error: python3-debian library not found.", file=sys.stderr)
     print("Please install it using: sudo apt install python3-debian", file=sys.stderr)
@@ -69,7 +69,7 @@ def get_installed_packages(status_file_path: str) -> Set[str]:
         # Open the status file with UTF-8 encoding
         with open(status_file_path, 'r', encoding='utf-8') as f:
             # Iterate through each package stanza in the file
-            pkg: Deb822Paragraph
+            pkg: Deb822
             for pkg in Deb822.iter_paragraphs(f):
                 # Ensure the essential 'Package' field exists
                 if 'Package' not in pkg:
@@ -126,7 +126,7 @@ def get_auto_installed_map(extended_states_path: str) -> Dict[str, int]:
         # Open the extended states file with UTF-8 encoding
         with open(extended_states_path, 'r', encoding='utf-8') as f:
             # Iterate through each package stanza
-            pkg: Deb822Paragraph
+            pkg: Deb822
             for pkg in Deb822.iter_paragraphs(f):
                 # Ensure the 'Package' field exists
                 if 'Package' not in pkg:
