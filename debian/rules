@@ -1,10 +1,17 @@
 #!/usr/bin/make -f
 
 # Minimal rules file using debhelper.
-# Build system steps (configure, build, install) are mostly no-ops
-# as this is a simple script. Installation is handled by dh_install
-# via debian/apt-world.install. The --with python3 addon handles
-# byte-compilation, dependency calculation (${python3:Depends}), etc.
+# Override dh_install to explicitly place the script correctly.
+
+# Optional: Override dh_auto_install to do nothing, just in case.
+override_dh_auto_install:
+
+# Explicitly override dh_install to place the script correctly
+override_dh_install:
+	# Create the target directory inside the package staging area
+	install -d debian/apt-world/usr/bin/
+	# Install the script to the target directory, renaming it, setting permissions
+	install -m 755 apt_world.py debian/apt-world/usr/bin/apt-world
 
 %:
 	dh $@ --with python3
