@@ -42,6 +42,7 @@ debian/schemas.lintian-overrides
 *.tar.gz
 *.orig.tar.gz
 *.debian.tar.xz
+*.build
 
 # pybuild
 .pybuild/

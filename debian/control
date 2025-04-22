@@ -16,7 +16,7 @@ Package: apt-world
 Architecture: all
 Depends: ${misc:Depends},
          python3,
-         python3-debian (>= 0.1.49~),  # Check version for Bookworm if needed
+         python3-debian (>= 0.1.49~),
          ${python3:Depends}
 Description: List manually installed Debian packages
  apt-world parses dpkg and apt status files to determine which packages
