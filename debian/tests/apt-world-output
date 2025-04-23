@@ -1,0 +1,20 @@
+#!/bin/sh
+# Basic output check for apt-world
+
+set -e # Exit immediately if a command exits with a non-zero status.
+
+echo "INFO: Running basic output check..."
+
+# Run the command and check if 'apt' is listed (usually manual/essential)
+if apt-world | grep -q '^apt$'; then
+    echo "INFO: Found 'apt' in output as expected."
+else
+    echo "ERROR: Did not find 'apt' in output."
+    # Optionally dump full output for debugging:
+    # echo "Full output:"
+    # apt-world
+    exit 1
+fi
+
+echo "INFO: Basic output check PASSED."
+exit 0

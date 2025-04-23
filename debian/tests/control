@@ -1,0 +1,3 @@
+Tests: apt-world-smoke, apt-world-output
+Depends: @, @builddeps@, python3-debian
+Restrictions: allow-stderr

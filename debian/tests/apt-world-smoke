@@ -1,0 +1,19 @@
+#!/bin/sh
+# Basic smoke test for apt-world
+
+set -e # Exit immediately if a command exits with a non-zero status.
+
+echo "INFO: Running smoke tests..."
+
+# Test 1: Check if help option works
+echo "INFO: Testing apt-world --help"
+apt-world --help > /dev/null || exit 1
+echo "INFO: --help option exited successfully."
+
+# Test 2: Check if command runs without arguments
+echo "INFO: Testing apt-world basic execution"
+apt-world > /dev/null || exit 1
+echo "INFO: Basic execution exited successfully."
+
+echo "INFO: Smoke tests PASSED."
+exit 0
