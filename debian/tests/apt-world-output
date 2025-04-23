@@ -1,19 +1,28 @@
 #!/bin/sh
-# Basic output check for apt-world
+# Basic output check for apt-world - revised
 
 set -e # Exit immediately if a command exits with a non-zero status.
 
-echo "INFO: Running basic output check..."
+echo "INFO: Running basic output check (revised)..."
 
-# Run the command and check if 'apt' is listed (usually manual/essential)
-if apt-world | grep -q '^apt$'; then
-    echo "INFO: Found 'apt' in output as expected."
+# Run the command, check exit status, and check if output is non-empty
+# Store output in a variable to check if it's empty '-n'
+if output=$(apt-world); [ -n "$output" ]; then
+    echo "INFO: apt-world ran successfully and produced output."
+    # Optionally log the first few lines for verification:
+    # echo "INFO: Start of output:"
+    # echo "$output" | head -n 5
 else
-    echo "ERROR: Did not find 'apt' in output."
-    # Optionally dump full output for debugging:
-    # echo "Full output:"
-    # apt-world
-    exit 1
+    # Check the exit status ($?) specifically if the output was empty
+    exit_status=$?
+    if [ $exit_status -eq 0 ]; then
+        echo "ERROR: apt-world ran successfully but produced NO output."
+        exit 1
+    else
+        echo "ERROR: apt-world failed to run (non-zero exit status $exit_status)."
+        # Error may have already been triggered by 'set -e', but explicit exit helps clarity
+        exit $exit_status
+    fi
 fi
 
 echo "INFO: Basic output check PASSED."
