@@ -1,4 +1,4 @@
-apt-world (0.1-1) unstable; urgency=medium
+apt-world (0.1-1) unstable
 
   * Initial release.
   * Implemented core logic to parse dpkg/status and apt/extended_states.
@@ -8,4 +8,4 @@ apt-world (0.1-1) unstable; urgency=medium
   * Added Debian packaging files (control, rules, manpage, etc.).
   * Configured autopkgtest.
 
- -- Connor Baldes <connorbaldes@gmail.com>  Thu, 24 Apr 2025 18:25:48 -0700
+ -- Connor Baldes <connorbaldes@gmail.com>  Thu, 24 Apr 2025 19:21:15 -0700
