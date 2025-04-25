@@ -1,5 +1,11 @@
 apt-world (0.1-1) unstable; urgency=medium
 
   * Initial release.
+  * Implemented core logic to parse dpkg/status and apt/extended_states.
+  * Added support for multiple modes (--explicitly-manual, --filter-base).
+  * Added command-line options via argparse.
+  * Integrated 'rich' library for enhanced terminal output.
+  * Added Debian packaging files (control, rules, manpage, etc.).
+  * Configured autopkgtest.
 
- -- Connor Baldes <connorbaldes@gmail.com>  Mon, 21 Apr 2025 18:25:48 -0700
+ -- Connor Baldes <connorbaldes@gmail.com>  Thu, 24 Apr 2025 18:25:48 -0700

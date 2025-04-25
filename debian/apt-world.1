@@ -1,10 +1,11 @@
 .\" Manpage for apt-world
 .\" Contact Connor Baldes <connorbaldes@gmail.com> to correct errors or typos.
-.TH apt-world 1 "April 22, 2025" "0.1" "apt-world Manual"
+.TH apt-world 1 "April 24, 2025" "0.1" "apt-world Manual"
 .SH NAME
 apt-world \- List manually installed Debian packages
 .SH SYNOPSIS
 .B apt-world
+[\fB--explicitly-manual\fR | \fB--filter-base\fR]
 [\fB-v\fR | \fB--verbose\fR]
 [\fB--status-file\fR \fIPATH\fR]
 [\fB--extended-states-file\fR \fIPATH\fR]
@@ -16,7 +17,15 @@ and the apt extended states file (default: /var/lib/apt/extended_states)
 to determine which currently installed packages were likely installed manually
 by a user, rather than automatically as dependencies.
 .PP
-A package is considered manually installed if it is currently installed AND
+The script supports three modes of operation (see OPTIONS below):
+.IP \(bu 2
+Default Mode: Lists packages not marked `Auto-Installed: 1`.
+.IP \(bu 2
+Explicitly Manual Mode (`--explicitly-manual`): Lists only packages marked `Auto-Installed: 0`.
+.IP \(bu 2
+Filter Base Mode (`--filter-base`): Like Default Mode, but heuristically removes likely base system packages unless they are explicitly marked manual.
+.PP
+In Default Mode, a package is considered manually installed if it is currently installed AND
 it meets either of the following conditions:
 .IP \(bu 2
 It is explicitly marked with "Auto-Installed: 0" in the extended_states file.
@@ -25,13 +34,18 @@ It is NOT listed in the extended_states file at all (implicit manual).
 .PP
 Packages marked "Auto-Installed: 1" are considered automatic dependencies.
 This utility provides output similar to the 'selected' set in Gentoo Portage.
-It differs slightly from 'apt-mark showmanual' in that packages not
-present in extended_states are included in the output. The output list
-is sorted alphabetically and printed to standard output, one package per line.
+.PP
+The output is presented as a formatted table to standard output, showing details for each listed package including Package Name, Architecture, Version, Auto Status (Explicit/Implicit), Priority, and Section. The list within the table is sorted alphabetically by package name.
 .SH OPTIONS
 .TP
+\fB--explicitly-manual\fR
+Mode 2: List only installed packages explicitly marked 'Auto-Installed: 0' in the extended_states file. This mode aims to show packages the user or an administrator has specifically flagged as manually installed via APT tools. Cannot be used with \fB--filter-base\fR.
+.TP
+\fB--filter-base\fR
+Mode 3: Start with the Default Mode list, but then heuristically filter out packages that are likely part of the essential base system (Essential: yes or Priority: required/important) UNLESS those packages are also explicitly marked 'Auto-Installed: 0'. This attempts to provide a view closer to user-selected applications and libraries, excluding common system infrastructure. Cannot be used with \fB--explicitly-manual\fR.
+.TP
 \fB-v\fR, \fB--verbose\fR
-Enable verbose (DEBUG level) logging to stderr. Shows internal steps like file paths being read and counts of packages found.
+Enable verbose (DEBUG level) logging to stderr. Shows internal steps like file paths being read and counts of packages found. Uses enhanced formatting via the 'rich' library.
 .TP
 \fB--status-file\fR \fIPATH\fR
 Specify an alternative path to the dpkg status file to parse.
@@ -49,11 +63,10 @@ Show a help message summarizing options and exit.
 The dpkg status file containing information about installed packages. Read by default. Required for operation.
 .TP
 \fI/var/lib/apt/extended_states\fR
-The apt extended states file containing the Auto-Installed flag. Read by default if available. If missing or unreadable, a warning is issued, and all installed packages are considered manual.
+The apt extended states file containing the Auto-Installed flag. Read by default if available. If missing or unreadable, a warning is issued, and Default and Filter Base modes consider all installed packages non-automatic (Explicit mode would find none unless explicitly marked 0).
 .SH SEE ALSO
 .BR dpkg (1),
 .BR apt-mark (8),
-.BR apt (8),
-.BR debian.deb822 (3pm)
+.BR apt (8)
 .SH AUTHOR
 Connor Baldes <connorbaldes@gmail.com>

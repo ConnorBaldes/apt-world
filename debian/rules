@@ -3,10 +3,7 @@
 # Minimal rules file using debhelper.
 # Override dh_install to explicitly place the script correctly.
 
-export DEB_BUILD_MAINT_OPTIONS =hardening=+all,distribution=unstable
-
-# Optional: Override dh_auto_install to do nothing, just in case.
-override_dh_auto_install:
+export DEB_BUILD_MAINT_OPTIONS =hardening=+all
 
 # Explicitly override dh_install to place the script correctly
 override_dh_install:

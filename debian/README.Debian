@@ -6,8 +6,8 @@ packages manually installed by the user, based on dpkg and apt
 status files.
 
 Dependencies:
- * This package requires the 'python3-debian' package to function,
-   which should be installed automatically as a dependency.
+ * This package requires the 'python3-debian' and 'python3-rich' packages
+   to function, which should be installed automatically as dependencies.
 
 Files Read:
  * /var/lib/dpkg/status (Required)
@@ -17,4 +17,4 @@ Notes:
  * This tool adheres to PEP 668 expectations and should not conflict
    with pip when installed as a system package.
 
- -- Connor Baldes <connorbaldes@gmail.com>  Tue, 22 Apr 2025 10:15:00 -0700
+ -- Connor Baldes <connorbaldes@gmail.com>  Thu, 24 Apr 2025 18:43:21 -0700
