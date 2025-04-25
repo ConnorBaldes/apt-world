@@ -86,3 +86,4 @@ This project is licensed under the MIT License (Expat). See the debian/copyright
 
 ### Author
 Connor Baldes <connorbaldes@gmail.com> (2024-2025)
+
