@@ -1,5 +1,6 @@
-apt-world (0.1-1) unstable
+apt-world (0.1-1) unstable; urgency=medium
 
+  [ Connor Baldes ]
   * Initial release.
   * Implemented core logic to parse dpkg/status and apt/extended_states.
   * Added support for multiple modes (--explicitly-manual, --filter-base).
